@@ -22,8 +22,7 @@ const WeatherState = (props) => {
       `https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${lng}&params=${params}&source=${source}`,
       {
         headers: {
-          Authorization:
-            "33daf96e-541f-11ec-be8b-0242ac130002-33daf9dc-541f-11ec-be8b-0242ac130002",
+          Authorization: process.env.REACT_APP_WEATHER_API,
         },
       }
     )
