@@ -30,8 +30,6 @@ const WeatherState = (props) => {
       .then((jsonData) => {
         console.log(jsonData);
         dispatch({ type: ALL_WEATHER, jsonData });
-        localStorage.setItem("Weather", JSON.stringify(jsonData));
-        localStorage.setItem("lastUpdated", JSON.stringify(new Date.today()));
       });
   };
 
