@@ -2,13 +2,14 @@ import { useContext, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Spinner from "./Spinner";
 import WeatherContext from "../contexts/WeatherContext";
+import useGatherTenDays from "../hooks/useGatherTenDays";
 
 const MainContent = () => {
   const weatherContext = useContext(WeatherContext);
   const [clickAllowed, setClickAllowed] = useState(false);
   const todayDate = Date.parse(new Date());
   const oneDay = 1000 * 60 * 60 * 24;
-
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   useEffect(() => {
     if (localStorage.getItem("lastUpdated") === null) {
       setClickAllowed(true);
@@ -25,17 +26,8 @@ const MainContent = () => {
     }
   }, [clickAllowed]);
 
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const weather = JSON.parse(localStorage.getItem("Weather"));
-  weather && console.log(weather);
-  const list = weather.hours;
-  let newList = [];
-  for (let i = 0; i < list.length; i++) {
-    if (list[i].time.includes("T21")) {
-      newList.push(list[i]);
-    }
-  }
-  console.log(newList);
+  let newList = useGatherTenDays();
+
   const paddleDays = newList.map((item) => {
     let newDate = new Date(Date.parse(item.time));
     let dow = days[newDate.getDay()];
@@ -74,18 +66,21 @@ const MainContent = () => {
         </p>
 
         <>
-          <div>Here's the data...</div>
-          <div>{paddleDays}</div>
+          <div className="text-lg mb-4 font-bold">
+            Here's the data for 7am each day...
+          </div>
+          {paddleDays && <div>{paddleDays}</div>}
         </>
       </div>
 
-      <div
-        onClick={handleClick}
-        // {clickAllowed ? disabled=false : disabled = true}
-        className="mx-12 bg-blue-500 w-60 lg:w-1/4 py-2 px-6 rounded hover: cursor-pointer hover:shadow-lg text-center text-white text-lg min-w-40"
-      >
-        Get Fresh Data
-      </div>
+      {clickAllowed && (
+        <div
+          onClick={handleClick}
+          className="mx-12 bg-blue-500 w-60 lg:w-1/4 py-2 px-6 rounded hover: cursor-pointer hover:shadow-lg text-center text-white text-lg min-w-40"
+        >
+          Get Fresh Data
+        </div>
+      )}
     </>
   );
 };
