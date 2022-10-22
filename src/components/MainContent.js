@@ -47,12 +47,15 @@ const MainContent = () => {
     let windDir = mapDirection(item.windDirection.noaa);
     let swellDir = mapDirection(item.swellDirection.noaa);
     let bgColor;
-    if (windDir === "SE") {
-      bgColor = "green";
-    }
 
     return (
-      <Card bgColor={bgColor} key={uuidv4()}>
+      <Card
+        windSpeed={item.windSpeed.noaa}
+        windDir={windDir}
+        swellDir={swellDir}
+        swellHeight={item.swellHeight.noaa}
+        key={uuidv4()}
+      >
         <div className="flex gap-6">
           <div className="">
             <div className="text-lg text-center mb-4 font-bold underline">
@@ -93,8 +96,8 @@ const MainContent = () => {
         <div className="mt-4 p-8 text-primaryCol">
           <div className="text-2xl mb-4">Paddling Forecast</div>
           <p className="mb-4">
-            The forecast is for downwind conditions to Mooloolaba from North and
-            South depending on wind and swell direction.
+            The forecast is for downwind conditions to Mooloolaba from the
+            North.
           </p>
 
           <>
