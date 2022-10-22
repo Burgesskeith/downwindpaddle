@@ -46,15 +46,21 @@ const MainContent = () => {
     let showDate = dow + " " + [day, mth, year].join("/");
     let windDir = mapDirection(item.windDirection.noaa);
     let swellDir = mapDirection(item.swellDirection.noaa);
+    let bgColor;
+    if (windDir === "SE") {
+      bgColor = "green";
+    }
 
     return (
-      <Card key={uuidv4()}>
-        <div className="flex gap-6 ">
-          <div>
-            <div className="text-lg mb-4 font-bold underline">{showDate}</div>
+      <Card bgColor={bgColor} key={uuidv4()}>
+        <div className="flex gap-6">
+          <div className="">
+            <div className="text-lg text-center mb-4 font-bold underline">
+              {showDate}
+            </div>
             <div className="flex">
               <div className="font-bold w-32 mr-6">Wind Speed:</div>
-              <div className="text-gray-800">{item.windSpeed.noaa} km/hr</div>
+              <div className="text-gray-800">{item.windSpeed.noaa} km/h</div>
             </div>
             <div className="flex">
               <div className="font-bold mr-6 w-32">Wind Direction:</div>
@@ -83,31 +89,33 @@ const MainContent = () => {
   };
   return (
     <>
-      <div className="mt-32 md:mt-20 p-8 text-primaryCol">
-        <div className="text-2xl mb-4">Paddling Forecast</div>
-        <p className="mb-4">
-          The forecast is for downwind conditions to Mooloolaba from North and
-          South depending on wind and swell direction.
-        </p>
+      <div className="container">
+        <div className="mt-4 p-8 text-primaryCol">
+          <div className="text-2xl mb-4">Paddling Forecast</div>
+          <p className="mb-4">
+            The forecast is for downwind conditions to Mooloolaba from North and
+            South depending on wind and swell direction.
+          </p>
 
-        <>
-          <div className="text-lg mb-4 font-bold">
-            Here's the data for 7am each day...
-          </div>
-          {paddleDays && (
-            <div className="flex justify-around flex-wrap">{paddleDays}</div>
-          )}
-        </>
-      </div>
-
-      {clickAllowed && (
-        <div
-          onClick={handleClick}
-          className="mx-12 bg-blue-500 w-60 lg:w-1/4 py-2 px-6 rounded hover: cursor-pointer hover:shadow-lg text-center text-white text-lg min-w-40"
-        >
-          Get Fresh Data
+          <>
+            <div className="text-lg mb-4 font-bold">
+              Here's the data for 7am each day...
+            </div>
+            {paddleDays && (
+              <div className="flex justify-around flex-wrap">{paddleDays}</div>
+            )}
+          </>
         </div>
-      )}
+
+        {clickAllowed && (
+          <div
+            onClick={handleClick}
+            className="mx-12 bg-blue-500 w-60 lg:w-1/4 py-2 px-6 rounded hover: cursor-pointer hover:shadow-lg text-center text-white text-lg min-w-40"
+          >
+            Get Fresh Data
+          </div>
+        )}
+      </div>
     </>
   );
 };
