@@ -3,7 +3,7 @@ import { GiCanoe } from "react-icons/gi";
 
 const Footer = () => {
   return (
-    <footer className="fixed bottom-0 w-full">
+    <footer className="fixed bottom-0 w-full bg-white">
       <div className=" text-primaryGrey body-font border border-t-gray-100">
         <div className=" px-5 py-8 mx-auto flex justify-between items-center sm:flex-row flex-col">
           <div className="md:flex justify-center sm:justify-start">

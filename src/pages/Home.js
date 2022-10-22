@@ -6,11 +6,9 @@ import MainContent from "../components/MainContent";
 const Home = () => {
   return (
     <>
-      <div>
-        <Navbar />
-        <MainContent />
-        <Footer />
-      </div>
+      <Navbar />
+      <MainContent />
+      <Footer />
     </>
   );
 };

@@ -3,7 +3,7 @@ import { GiCanoe } from "react-icons/gi";
 
 const Navbar = () => {
   return (
-    <header className="fixed top-0 w-full">
+    <header className="fixed top-0 w-full bg-white">
       <div className="text-primaryGrey body-font border border-b-gray-100 shadow">
         <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
           <a

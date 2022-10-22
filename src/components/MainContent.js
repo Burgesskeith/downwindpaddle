@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Spinner from "./Spinner";
+import Card from "./Card";
 import WeatherContext from "../contexts/WeatherContext";
 import useGatherTenDays from "../hooks/useGatherTenDays";
 
@@ -9,7 +10,15 @@ const MainContent = () => {
   const [clickAllowed, setClickAllowed] = useState(false);
   const todayDate = Date.parse(new Date());
   const oneDay = 1000 * 60 * 60 * 24;
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
   useEffect(() => {
     if (localStorage.getItem("lastUpdated") === null) {
       setClickAllowed(true);
@@ -39,13 +48,29 @@ const MainContent = () => {
     let swellDir = mapDirection(item.swellDirection.noaa);
 
     return (
-      <div key={uuidv4()} className="flex gap-6">
-        <p>{showDate}</p>
-        <p>{item.windSpeed.noaa}</p>
-        <p>{windDir}</p>
-        <p>{swellDir}</p>
-        <p>{item.swellHeight.noaa}</p>
-      </div>
+      <Card key={uuidv4()}>
+        <div className="flex gap-6 ">
+          <div>
+            <div className="text-lg mb-4 font-bold underline">{showDate}</div>
+            <div className="flex">
+              <div className="font-bold w-32 mr-6">Wind Speed:</div>
+              <div className="text-gray-800">{item.windSpeed.noaa} km/hr</div>
+            </div>
+            <div className="flex">
+              <div className="font-bold mr-6 w-32">Wind Direction:</div>
+              <div className="text-gray-800">{windDir}</div>
+            </div>
+            <div className="flex">
+              <div className="font-bold mr-6 w-32">Swell Direction:</div>
+              <div className="text-gray-800">{swellDir}</div>
+            </div>
+            <div className="flex">
+              <div className="font-bold mr-6 w-32">Swell Height:</div>
+              <div className="text-gray-800">{item.swellHeight.noaa} m</div>
+            </div>
+          </div>
+        </div>
+      </Card>
     );
   });
 
@@ -69,7 +94,9 @@ const MainContent = () => {
           <div className="text-lg mb-4 font-bold">
             Here's the data for 7am each day...
           </div>
-          {paddleDays && <div>{paddleDays}</div>}
+          {paddleDays && (
+            <div className="flex justify-around flex-wrap">{paddleDays}</div>
+          )}
         </>
       </div>
 
