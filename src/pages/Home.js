@@ -1,14 +1,13 @@
-import React from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import MainContent from "../components/MainContent";
 
 const Home = () => {
   return (
     <>
-      <Navbar />
-      <MainContent />
-      <Footer />
+      <body className="flex flex-col min-h-100vh">
+        <div className="flex-1">
+          <MainContent />
+        </div>
+      </body>
     </>
   );
 };
