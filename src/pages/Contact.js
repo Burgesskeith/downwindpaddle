@@ -1,14 +1,14 @@
 const Contact = () => {
   return (
     <>
-      <body className="flex flex-col min-h-100vh">
+      <div className="flex flex-col min-h-100vh">
         <div className="flex-1">
           <div className="mt-4 p-8 text-primaryCol">
             <div className="text-2xl mb-4">Contact Us</div>
             <p className="mb-4">Still to add a form...</p>
           </div>
         </div>
-      </body>
+      </div>
     </>
   );
 };

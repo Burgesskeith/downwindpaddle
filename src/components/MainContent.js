@@ -7,7 +7,7 @@ import useGatherTenDays from "../hooks/useGatherTenDays";
 
 const MainContent = () => {
   const weatherContext = useContext(WeatherContext);
-  const [clickAllowed, setClickAllowed] = useState(false);
+  const [clickAllowed, setClickAllowed] = useState(true);
   const todayDate = Date.parse(new Date());
   const oneDay = 1000 * 60 * 60 * 24;
   const days = [
@@ -29,7 +29,7 @@ const MainContent = () => {
       let storedDateObject = JSON.parse(localStorage.getItem("lastUpdated"));
       let lastStoredDate = Date.parse(storedDateObject.date);
       // check that data has not been collected within last 4 days
-      if (Math.round(todayDate - lastStoredDate) / oneDay > 4) {
+      if (Math.round(todayDate - lastStoredDate) / oneDay > 0) {
         setClickAllowed(true);
       }
     }
@@ -46,7 +46,6 @@ const MainContent = () => {
     let showDate = dow + " " + [day, mth, year].join("/");
     let windDir = mapDirection(item.windDirection.noaa);
     let swellDir = mapDirection(item.swellDirection.noaa);
-    let bgColor;
 
     return (
       <Card
@@ -88,8 +87,10 @@ const MainContent = () => {
       return alert("No reed to update data as it's sufficiently up to date.");
     }
     weatherContext.getWeather();
+    console.log(weatherContext);
     setClickAllowed(false);
   };
+
   return (
     <>
       <div className="mt-4 p-8 text-primaryCol">

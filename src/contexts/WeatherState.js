@@ -1,4 +1,4 @@
-import React, { useReducer, useContext, useEffect } from "react";
+import React, { useReducer, useContext } from "react";
 import { ALL_WEATHER } from "./types";
 import WeatherContext from "./WeatherContext";
 import weatherReducer from "./WeatherReducer";

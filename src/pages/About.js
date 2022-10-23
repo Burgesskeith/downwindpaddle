@@ -1,7 +1,7 @@
 const About = () => {
   return (
     <>
-      <body className="flex flex-col min-h-100vh">
+      <div className="flex flex-col min-h-100vh">
         <div className="flex-1">
           <div className="mt-4 p-8 text-primaryCol">
             <div className="text-2xl mb-4">About Us and This Application</div>
@@ -35,11 +35,15 @@ const About = () => {
               </li>
             </ol>
             <div className="mt-4">
-              <p>If you are finding the application useful and have ideas to improve it, please feel free to send yout thoughts using the form in our contact page. </p>
+              <p>
+                If you are finding the application useful and have ideas to
+                improve it, please feel free to send yout thoughts using the
+                form in our contact page.{" "}
+              </p>
             </div>
           </div>
         </div>
-      </body>
+      </div>
     </>
   );
 };

@@ -2,10 +2,10 @@ import React from "react";
 
 const Card = ({ children, windDir, windSpeed, swellDir, swellHeight }) => {
   let score = 0;
-  console.log(windDir);
-  console.log(windSpeed);
-  console.log(swellDir);
-  console.log(swellHeight);
+  // console.log(windDir);
+  // console.log(windSpeed);
+  // console.log(swellDir);
+  // console.log(swellHeight);
 
   switch (windDir) {
     case "S":
@@ -50,7 +50,7 @@ const Card = ({ children, windDir, windSpeed, swellDir, swellHeight }) => {
     score += 1;
   }
 
-  console.log(score);
+  // console.log(score);
   return (
     <>
       <div
