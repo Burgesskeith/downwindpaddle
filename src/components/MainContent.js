@@ -2,11 +2,11 @@ import { useContext, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Spinner from "./Spinner";
 import Card from "./Card";
-import WeatherContext from "../contexts/WeatherContext";
+import { WeatherContext } from "../contexts/WeatherContext";
 import useGatherTenDays from "../hooks/useGatherTenDays";
 
 const MainContent = () => {
-  const weatherContext = useContext(WeatherContext);
+  const { weather } = useContext(WeatherContext);
   const [clickAllowed, setClickAllowed] = useState(true);
   const todayDate = Date.parse(new Date());
   const oneDay = 1000 * 60 * 60 * 24;
@@ -19,6 +19,10 @@ const MainContent = () => {
     "Friday",
     "Saturday",
   ];
+  let newList;
+
+  console.log(weather);
+
   useEffect(() => {
     if (localStorage.getItem("lastUpdated") === null) {
       setClickAllowed(true);
@@ -29,13 +33,13 @@ const MainContent = () => {
       let storedDateObject = JSON.parse(localStorage.getItem("lastUpdated"));
       let lastStoredDate = Date.parse(storedDateObject.date);
       // check that data has not been collected within last 4 days
-      if (Math.round(todayDate - lastStoredDate) / oneDay > 0) {
+      if (Math.round(todayDate - lastStoredDate) / oneDay > 4) {
         setClickAllowed(true);
       }
     }
   }, [clickAllowed]);
 
-  let newList = useGatherTenDays();
+  newList = useGatherTenDays();
 
   const paddleDays = newList.map((item) => {
     let newDate = new Date(Date.parse(item.time));
@@ -86,8 +90,8 @@ const MainContent = () => {
     if (!clickAllowed) {
       return alert("No reed to update data as it's sufficiently up to date.");
     }
-    weatherContext.getWeather();
-    console.log(weatherContext);
+    // WeatherContext.getWeather();
+    // console.log(weather);
     setClickAllowed(false);
   };
 
@@ -103,9 +107,9 @@ const MainContent = () => {
           <div className="text-lg mb-4 font-bold">
             Here's the data for 7am each day...
           </div>
-          {paddleDays && (
+          {/* {paddleDays && (
             <div className="flex justify-around flex-wrap">{paddleDays}</div>
-          )}
+          )} */}
         </>
       </div>
 

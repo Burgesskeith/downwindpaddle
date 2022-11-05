@@ -1,1 +1,1 @@
-export const ALL_WEATHER = "ALL_WEATHER";
+export const GET_WEATHER = "GET_WEATHER";

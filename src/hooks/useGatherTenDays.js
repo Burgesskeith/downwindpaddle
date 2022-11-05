@@ -2,6 +2,10 @@
 
 const useGatherTenDays = () => {
   const weather = JSON.parse(localStorage.getItem("Weather"));
+  if (!weather) {
+    return [];
+  }
+
   const list = weather.hours;
   let newList = [];
   for (let i = 0; i < list.length; i++) {

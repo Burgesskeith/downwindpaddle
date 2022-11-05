@@ -5,11 +5,11 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Settings from "./pages/Settings";
 import Contact from "./pages/Contact";
-import WeatherState from "./contexts/WeatherState";
+import WeatherContextProvider from "./contexts/WeatherContext";
 
 function App() {
   return (
-    <WeatherState>
+    <WeatherContextProvider>
       <Router>
         <Navbar />
         <Routes>
@@ -21,7 +21,7 @@ function App() {
         </Routes>
         <Footer />
       </Router>
-    </WeatherState>
+    </WeatherContextProvider>
   );
 }
 

@@ -1,5 +1,56 @@
-import { createContext } from "react";
+import { useEffect } from "react";
+import { createContext, useReducer } from "react";
+import weatherReducer from "../Reducers/WeatherReducer";
+import { GET_WEATHER } from "./types";
 
-const WeatherContext = createContext({});
+export const WeatherContext = createContext();
 
-export default WeatherContext;
+const WeatherContextProvider = (props) => {
+  const initialState = {
+    weather: [],
+  };
+  const [weather, dispatch] = useReducer(
+    weatherReducer,
+    { weather: [] },
+    () => {
+      const localData = localStorage.getItem("weather");
+      return localData ? JSON.parse(localData) : { weather: [] };
+    }
+  );
+
+  const lat = 26.6809;
+  const lng = 153.1217;
+  const source = "noaa";
+  const params =
+    "swellDirection,swellHeight,swellPeriod,windDirection,windSpeed";
+
+  useEffect(() => {
+    const getWeather = async () => {
+      await fetch(
+        `https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${lng}&params=${params}&source=${source}`,
+        {
+          headers: {
+            Authorization: process.env.REACT_APP_WEATHER_API,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          dispatch({ type: GET_WEATHER, data });
+        });
+    };
+    getWeather();
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("weather", JSON.stringify(weather));
+  }, [weather]);
+
+  return (
+    <WeatherContext.Provider value={{ weather, dispatch }}>
+      {props.children}
+    </WeatherContext.Provider>
+  );
+};
+
+export default WeatherContextProvider;
