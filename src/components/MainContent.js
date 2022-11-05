@@ -7,7 +7,7 @@ import useGatherTenDays from "../hooks/useGatherTenDays";
 
 const MainContent = () => {
   const { weather } = useContext(WeatherContext);
-  const [clickAllowed, setClickAllowed] = useState(true);
+  const [clickAllowed, setClickAllowed] = useState(false);
   const todayDate = Date.parse(new Date());
   const oneDay = 1000 * 60 * 60 * 24;
   const days = [

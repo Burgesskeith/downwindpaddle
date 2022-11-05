@@ -26,18 +26,24 @@ const WeatherContextProvider = (props) => {
 
   useEffect(() => {
     const getWeather = async () => {
-      await fetch(
-        `https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${lng}&params=${params}&source=${source}`,
-        {
-          headers: {
-            Authorization: process.env.REACT_APP_WEATHER_API,
-          },
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          dispatch({ type: GET_WEATHER, data });
-        });
+      const todayDate = Date.parse(new Date());
+      const oneDay = 1000 * 60 * 60 * 24;
+      const dataUpToDate = JSON.parse(localStorage.getItem("lastUpdated"));
+
+      if (!dataUpToDate || Math.round(todayDate - dataUpToDate) / oneDay > 4) {
+        await fetch(
+          `https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${lng}&params=${params}&source=${source}`,
+          {
+            headers: {
+              Authorization: process.env.REACT_APP_WEATHER_API,
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            dispatch({ type: GET_WEATHER, data });
+          });
+      }
     };
     getWeather();
   }, []);
