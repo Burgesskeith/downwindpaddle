@@ -6,7 +6,7 @@ import { WeatherContext } from "../contexts/WeatherContext";
 import useGatherTenDays from "../hooks/useGatherTenDays";
 
 const MainContent = () => {
-  const { weather } = useContext(WeatherContext);
+  const { weather, getWeather } = useContext(WeatherContext);
   const [clickAllowed, setClickAllowed] = useState(false);
   const todayDate = Date.parse(new Date());
   const oneDay = 1000 * 60 * 60 * 24;
@@ -20,8 +20,6 @@ const MainContent = () => {
     "Saturday",
   ];
   let newList;
-
-  console.log(weather);
 
   useEffect(() => {
     if (localStorage.getItem("lastUpdated") === null) {
@@ -47,7 +45,8 @@ const MainContent = () => {
     let day = newDate.getDate();
     let mth = newDate.getMonth() + 1;
     let year = newDate.getFullYear();
-    let showDate = dow + " " + [day, mth, year].join("/");
+    let showDate = dow + " " + newDate.toLocaleDateString().toString(); // dow + " " + [day, mth, year].join("/");
+    let showTime = newDate.toLocaleTimeString().toString();
     let windDir = mapDirection(item.windDirection.noaa);
     let swellDir = mapDirection(item.swellDirection.noaa);
 
@@ -61,8 +60,12 @@ const MainContent = () => {
       >
         <div className="flex gap-6">
           <div className="">
-            <div className="text-lg text-center mb-4 font-bold underline">
+            <div className="text-lg text-center mb-2 font-bold ">
               {showDate}
+            </div>
+            <div className="text-sm text-center mb-2 ">{showTime}</div>
+            <div className="mb-2">
+              <hr />
             </div>
             <div className="flex">
               <div className="font-bold w-32 mr-6">Wind Speed:</div>
@@ -90,26 +93,30 @@ const MainContent = () => {
     if (!clickAllowed) {
       return alert("No reed to update data as it's sufficiently up to date.");
     }
-    // WeatherContext.getWeather();
-    // console.log(weather);
+    console.log("let's run the get data function");
+    getWeather();
     setClickAllowed(false);
   };
 
   return (
     <>
-      <div className="mt-4 p-8 text-primaryCol">
+      <div className="mt-4 p-8 text-primaryCol w-[300px] sm:w-full md:w-[700px] 2xl:w-full mx-auto">
         <div className="text-2xl mb-4">Paddling Forecast</div>
         <p className="mb-4">
-          The forecast is for downwind conditions to Mooloolaba from the North.
+          The forecast is for downwind conditions to Mooloolaba beach from the
+          North.
         </p>
 
         <>
-          <div className="text-lg mb-4 font-bold">
-            Here's the data for 7am each day...
+          <div className="text-lg mb-4 ">
+            A green coloured tile suggests a good day for paddling downwind is
+            forecast.
           </div>
-          {/* {paddleDays && (
-            <div className="flex justify-around flex-wrap">{paddleDays}</div>
-          )} */}
+          {paddleDays && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-5">
+              {paddleDays}
+            </div>
+          )}
         </>
       </div>
 
