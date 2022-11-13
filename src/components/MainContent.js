@@ -1,9 +1,10 @@
 import { useContext, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-import Spinner from "./Spinner";
+// import Spinner from "./Spinner";
 import Card from "./Card";
 import { WeatherContext } from "../contexts/WeatherContext";
 import useGatherTenDays from "../hooks/useGatherTenDays";
+import { useGetDirection } from "../hooks/useGetDirection";
 
 const MainContent = () => {
   const { weather, getWeather } = useContext(WeatherContext);
@@ -31,31 +32,32 @@ const MainContent = () => {
       let storedDateObject = JSON.parse(localStorage.getItem("lastUpdated"));
       let lastStoredDate = Date.parse(storedDateObject.date);
       // check that data has not been collected within last 4 days
-      if (Math.round(todayDate - lastStoredDate) / oneDay > 4) {
+      if (Math.round(todayDate - lastStoredDate) / oneDay > 0) {
         setClickAllowed(true);
       }
     }
   }, [clickAllowed]);
 
   newList = useGatherTenDays();
+  const getDirection = useGetDirection;
 
   const paddleDays = newList.map((item) => {
     let newDate = new Date(Date.parse(item.time));
     let dow = days[newDate.getDay()];
-    let day = newDate.getDate();
-    let mth = newDate.getMonth() + 1;
-    let year = newDate.getFullYear();
     let showDate = dow + " " + newDate.toLocaleDateString().toString(); // dow + " " + [day, mth, year].join("/");
     let showTime = newDate.toLocaleTimeString().toString();
-    let windDir = mapDirection(item.windDirection.noaa);
-    let swellDir = mapDirection(item.swellDirection.noaa);
+    let windDir = getDirection(item.windDirection.noaa);
+    let swellDir = getDirection(item.swellDirection.noaa);
+    let windSpeedKMH = Math.round(item.windSpeed.noaa * 3.6); // convert metres per second to km/hr
+    let swellHeight = item.swellHeight.noaa;
+    let waveHeight = item.waveHeight.noaa;
 
     return (
       <Card
-        windSpeed={item.windSpeed.noaa}
+        windSpeed={windSpeedKMH}
         windDir={windDir}
         swellDir={swellDir}
-        swellHeight={item.swellHeight.noaa}
+        swellHeight={swellHeight}
         key={uuidv4()}
       >
         <div className="flex gap-6">
@@ -69,7 +71,7 @@ const MainContent = () => {
             </div>
             <div className="flex">
               <div className="font-bold w-32 mr-6">Wind Speed:</div>
-              <div className="text-gray-800">{item.windSpeed.noaa} km/h</div>
+              <div className="text-gray-800">{windSpeedKMH} km/h</div>
             </div>
             <div className="flex">
               <div className="font-bold mr-6 w-32">Wind Direction:</div>
@@ -81,7 +83,11 @@ const MainContent = () => {
             </div>
             <div className="flex">
               <div className="font-bold mr-6 w-32">Swell Height:</div>
-              <div className="text-gray-800">{item.swellHeight.noaa} m</div>
+              <div className="text-gray-800">{swellHeight} m</div>
+            </div>
+            <div className="flex">
+              <div className="font-bold mr-6 w-32">Wave Height:</div>
+              <div className="text-gray-800">{waveHeight} m</div>
             </div>
           </div>
         </div>
@@ -133,43 +139,3 @@ const MainContent = () => {
 };
 
 export default MainContent;
-
-const mapDirection = (deg) => {
-  if (deg >= 0 && deg < 11.25) {
-    return "N";
-  } else if (deg >= 11.25 && deg < 33.75) {
-    return "NNE";
-  } else if (deg >= 33.75 && deg < 56.25) {
-    return "NE";
-  } else if (deg >= 56.25 && deg < 78.75) {
-    return "ENE";
-  } else if (deg >= 78.75 && deg < 101.25) {
-    return "E";
-  } else if (deg >= 101.25 && deg < 123.75) {
-    return "ESE";
-  } else if (deg >= 123.75 && deg < 146.25) {
-    return "SE";
-  } else if (deg >= 146.25 && deg < 168.75) {
-    return "SSE";
-  } else if (deg >= 168.75 && deg < 191.25) {
-    return "S";
-  } else if (deg >= 191.25 && deg < 213.75) {
-    return "SSW";
-  } else if (deg >= 213.75 && deg < 236.25) {
-    return "SW";
-  } else if (deg >= 236.25 && deg < 258.75) {
-    return "WSW";
-  } else if (deg >= 258.75 && deg < 281.25) {
-    return "W";
-  } else if (deg >= 281.25 && deg < 303.75) {
-    return "WNW";
-  } else if (deg >= 303.75 && deg < 326.25) {
-    return "NW";
-  } else if (deg >= 326.25 && deg < 348.75) {
-    return "NNW";
-  } else if (deg >= 348.75 && deg <= 360) {
-    return "N";
-  } else {
-    return "Error";
-  }
-};

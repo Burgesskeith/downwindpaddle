@@ -18,11 +18,11 @@ const WeatherContextProvider = (props) => {
     }
   );
 
-  const lat = 26.6809;
-  const lng = 153.1217;
+  const lat = -26.680944;
+  const lng = 153.121665;
   const source = "noaa";
   const params =
-    "swellDirection,swellHeight,swellPeriod,windDirection,windSpeed";
+    "swellDirection,swellHeight,swellPeriod,windDirection,windSpeed,waveHeight";
 
   const getWeather = async () => {
     const todayDate = Date.parse(new Date());
@@ -46,7 +46,7 @@ const WeatherContextProvider = (props) => {
   };
 
   useEffect(() => {
-    localStorage.setItem("weather", JSON.stringify(weather));
+    weather && localStorage.setItem("weather", JSON.stringify(weather));
   }, [weather]);
 
   return (

@@ -7,7 +7,6 @@ const useGatherTenDays = () => {
   }
 
   const list = weather.weather;
-  console.log(list);
   let newList = [];
   for (let i = 0; i < list.length; i++) {
     if (list[i].time.includes("T21")) {

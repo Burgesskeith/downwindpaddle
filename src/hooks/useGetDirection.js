@@ -1,4 +1,4 @@
-function useGetDirection(deg) {
+export function useGetDirection(deg) {
   if (deg >= 0 && deg < 11.25) {
     return "N";
   } else if (deg >= 11.25 && deg < 33.75) {
